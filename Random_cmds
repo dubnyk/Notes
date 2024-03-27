@@ -1,0 +1,2 @@
+#Averages the sum
+awk '{sum += $1; count++} END {if (count > 0) print "Average:", sum/count; else print "No records found"}'
