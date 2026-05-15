@@ -157,8 +157,21 @@ Remove-Item "$env:APPDATA\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_hi
 #Delete Prefetch
 del /f /s /q %SystemRoot%\Prefetch\*.*
 
-#disable system restore
+#Delete / modify Amcache
+del /f /q "C:\Windows\AppCompat\Programs\Amcache.hve"
+reg load HKLM\Amcache "C:\Windows\AppCompat\Programs\Amcache.hve"
+reg query HKLM\Amcache /s
+reg delete HKLM\Amcache /v <PROGRAM_GUID> /f
+reg unload HKLM\Amcache
+
+sc stop AeLookupSvc
+sc config AeLookupSvc start= disabled
+
+
+#disable system restore / shadow copy services
 wmic.exe /Namespace:\\root\default Path SystemRestore Call Disable
+sc stop sdrsvc
+sc config sdrsvc start= disabled
 
 #remove temp reg keys
 reg query HKCU\Software\Microsoft\Windows\CurrentVersion\Run (view)
