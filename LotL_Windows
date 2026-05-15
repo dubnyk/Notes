@@ -34,11 +34,12 @@ net view /domain
 netstat -an | find "ESTABLISHED"
 
 #services running?
-sc query
+sc query | findstr SERVICE_NAME
+sc qc <ServiceName>
 Get-Service
 Get-Service | Where-Object {$_.Status -eq 'Running'}
 wmic service get Name,PathName,StartMode (version?)
-
+Get-WmiObject win32_service | Where-Object {($_.StartMode -eq "Auto") -and ($_.PathName -notlike '"*"')} | Select-Object Name, DisplayName, PathName
 
 #scheduled tasks
 schtasks /query /fo LIST /v
