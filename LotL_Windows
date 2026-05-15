@@ -1,0 +1,43 @@
+#host info
+hostname
+systeminfo | findstr /B /C:"OS Name" /C:"OS Version"
+whoami /all
+net user %username%
+
+#check network config
+ipconfig /all
+route print
+arp -a
+netstat -ano
+
+#enumerate domaine/groups/users
+systeminfo | findstr /C:"Domain"
+echo %userdomain%
+net config workstation
+net group /domain
+net group "Domain Admins" /domain
+net user /domain
+query user
+qwinsta
+
+#network shares
+net share
+net view \\RemoteComputerName
+net use \\RemoteComputerName\ShareName
+
+#network connections - active
+net session
+net view /domain
+netstat -an | find "ESTABLISHED"
+
+#scheduled tasks
+schtasks /query /fo LIST /v
+
+#files of interest
+dir C:\Users\ /s /b | findstr "passwords"
+dir C:\*.* /A:H /S
+
+#remote tasks
+tasklist /svc
+wmic process list brief
+
