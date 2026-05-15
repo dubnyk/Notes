@@ -43,6 +43,8 @@ cat /etc/hosts
 systemctl list-units --type=service --state=running
 ps aux
 lsof -i -P -n
+sudo apt list --installed | grep mysql
+yum list installed | grep ssh
 
 #scheduled tasks?
 crontab -l
