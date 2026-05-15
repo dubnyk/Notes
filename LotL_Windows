@@ -114,9 +114,6 @@ echo "Start-Process 'C:\path\to\malicious.ps1'" >> $PROFILE
 Replace a legitimate DLL like version.dll with a malicious one in the same directory as the app that requires it.
 
 
-
-
-
 ###############
 STEALTH(admin priv required)
 ###############
