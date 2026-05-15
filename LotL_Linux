@@ -25,9 +25,9 @@ arp -a
 for ip in $(seq 1 254); do ping -c 1 192.168.1.$ip | grep "64 bytes"; done
 
 #local config files / files of interest
-find / -perm -4000 -type f 2>/dev/null
 cat /etc/shadow
 cat /etc/passwd
+find / -perm -4000 -type f 2>/dev/null
 find / -name "*.conf" 2>/dev/null
 find / -name "id_rsa" 2>/dev/null
 cat ~/.ssh/id_rsa
