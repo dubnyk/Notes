@@ -37,6 +37,8 @@ netstat -an | find "ESTABLISHED"
 sc query
 Get-Service
 Get-Service | Where-Object {$_.Status -eq 'Running'}
+wmic service get Name,PathName,StartMode (version?)
+
 
 #scheduled tasks
 schtasks /query /fo LIST /v
