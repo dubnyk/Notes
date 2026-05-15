@@ -1,0 +1,62 @@
+#system info
+hostname
+uname -a
+whoami
+id
+cat /etc/os-release
+
+#users
+cat /etc/passwd | cut -d: -f1
+
+#sudo perm
+sudo -l
+
+#network int & connections
+ifconfig -a
+ip a
+netstat -tulpn
+ip route
+arp -a
+
+#connected hosts
+for ip in $(seq 1 254); do ping -c 1 192.168.1.$ip | grep "64 bytes"; done
+
+#local config files / files of interest
+cat /etc/shadow
+cat /etc/passwd
+find / -name "*.conf" 2>/dev/null
+find / -name "id_rsa" 2>/dev/null
+cat ~/.ssh/id_rsa
+cat ~/.ssh/authorized_keys
+
+#dns/hostname info
+cat /etc/resolv.conf
+cat /etc/hostname
+dnsdomainname
+cat /etc/hosts
+
+#services running? open ports?
+systemctl list-units --type=service --state=running
+ps aux
+lsof -i -P -n
+
+#scheduled tasks?
+crontab -l
+cat /etc/crontab
+ls -la /etc/cron.*
+
+#users and groups
+who
+w
+finger
+last
+groups
+
+#shared resources?
+showmount -e <hostname>
+rpcinfo -p <hostname>
+df -h | grep nfs
+smbclient -L \\<hostname>
+
+#enviornment variables?
+env
