@@ -1,0 +1,155 @@
+1. Phishing Email Detected
+Detection:
+Look for suspicious email red flags: strange domains, spelling errors, urgency, or abnormal requests.
+Verify suspicious links by hovering over them or using tools like VirusTotal.
+Check headers for unusual sender information or mismatched email routes.
+Validation:
+Search the sender's domain or email in threat intelligence tools (e.g., VirusTotal, AbuseIPDB).
+If there are attachments, scan or sandbox them (if properly trained to do so).
+Confirm with the user if they were expecting the email (if needed).
+Containment:
+Quarantine or delete the malicious email.
+Block the sender's domain/IP in email security tools.
+Notify the user not to engage with the email or similar messages.
+Documentation:
+Record sender, subject, recipient, attack indicators, and actions taken.
+Escalation:
+If the phishing email is targeted, part of a larger attack, or sophisticated, forward to Tier 2 or the Incident Response team.
+
+2. Malware Infection Detected on Endpoint
+Detection:
+Review the alert details from antivirus (AV) or endpoint detection and response (EDR) tools.
+Identify the hostname, path of the malware file, and user account involved.
+Check for any reported strange behavior by the affected user (slow performance, errors, pop-ups).
+Validation:
+Research the malware name, hash value, or processes in threat databases (e.g., VirusTotal).
+Check if the detection is a false positive by consulting internal documentation.
+Containment:
+Isolate the infected device from the network.
+Stop or remove the malicious file or process using the EDR/antivirus tools.
+Documentation:
+Record alert details, affected endpoint/user, malicious file name, and containment actions.
+Escalation:
+Escalate if the malware resurfaces, spreads to other systems, or is part of a coordinated attack.
+
+3. Unauthorized Access Attempt
+Detection:
+Identify alerts for brute force attempts, suspicious logins from unknown locations, or multiple failed login attempts.
+Review logs to pinpoint the source IP and affected accounts.
+Validation:
+Cross-check login attempts with the user's legitimate activity (timing, location, devices).
+Validate the IP using threat intelligence tools.
+Determine if the attempt matches known attack indicators (e.g., dictionary attack or credential stuffing).
+Containment:
+Lock the impacted user account or temporarily block access.
+Block the source IP at the firewall or security tool.
+Documentation:
+Record details like the number of failed login attempts, source IP, username, and actions taken.
+Escalation:
+Escalate if the attacker succeeds in logging in or if critical assets are targeted.
+
+4. Insider Threat Activity
+Detection:
+Review alerts indicating excessive or unusual access to sensitive files.
+Monitor for behaviors like large file downloads, email exfiltration, or unusual system activity.
+Validation:
+Compare activity to the user’s typical behavior or job role.
+Check logs related to affected files, folders, or systems.
+Ensure the user was not authorized for the actions flagged.
+Containment:
+Suspend the user account or rogue process (if confirmed malicious).
+Restrict access to sensitive resources temporarily.
+Documentation:
+Record what triggered the alert, the user’s account details, files/systems accessed, and steps taken.
+Escalation:
+Forward the case to Tier 2 and HR/Legal teams if intentional sabotage or data theft is suspected.
+
+5. Web Application Attack
+Detection:
+Identify WAF alerts indicating potential attacks like SQL Injection (SQLi), Cross-Site Scripting (XSS), or file inclusion attempts.
+Collect details like source IP, timestamps, and target URLs.
+Validation:
+Correlate the WAF logs with patterns of real attacks.
+Test payloads (if your job explicitly allows this) in a sandbox to confirm malicious intent.
+Containment:
+Block the attacker’s IP or subnet at the WAF/firewall level.
+Apply WAF rules to mitigate the specific attack patterns.
+Documentation:
+Record source IP, attack type, payloads, affected applications, and actions taken.
+Escalation:
+Escalate if the attack successfully bypassed security measures or caused damage.
+
+6. Denial-of-Service (DoS/DDoS) Attack
+Detection:
+Look for alerts identifying abnormal traffic spikes from specific external sources.
+Monitor for degradation in service (e.g., website availability issues).
+Validation:
+Use traffic logs to confirm unusual volume or repetitive requests (e.g., SYN flood, HTTP GET flood).
+Check firewalls and routers for indicators of an active DoS/DDoS attack.
+Containment:
+Enable DoS protection settings on your network tools/firewalls.
+Block the source IP ranges or auto-scale resources if possible.
+Documentation:
+Log affected systems, traffic patterns, source IPs, and tools used for mitigation.
+Escalation:
+Reach out to cloud service providers or ISPs to assist with blocking large-scale attacks.
+
+7. Unusual Network Activity
+Detection:
+Identify suspicious traffic patterns (e.g., port scanning, irregular bandwidth, or unapproved protocols).
+Obtain alerts from SIEM, firewall, or IDS/IPS tools.
+Validation:
+Correlate unusual activity with business operations (e.g., scheduled maintenance).
+Use tools like Wireshark to analyze traffic for irregular patterns.
+Containment:
+Temporarily block unknown IPs or protocols used for suspicious communication.
+Segregate affected subnets or segments of your network.
+Documentation:
+Record affected systems, the type of activity, and containment actions taken.
+Escalation:
+Escalate if the unusual activity is ongoing or related to a larger threat.
+
+8. Suspicious External Connection
+Detection:
+Look for alerts showing communication with known bad IPs/domains.
+Review logs to find affected systems and identify the processes initiating the connection.
+Validation:
+Cross-reference IPs/domains with threat intelligence tools for reputation scoring.
+Search for patterns of persistent outbound communication.
+Containment:
+Block suspicious external IPs/domains at the firewall or proxy level.
+Stop and isolate processes/interfaces tied to the connection.
+Documentation:
+Record malicious IPs/domains, the affected host/process, and block actions taken.
+Escalation:
+Escalate to Tier 2 if data exfiltration or ongoing communication is suspected.
+
+9. Unpatched System/Vulnerability Exploitation
+Detection:
+Review alerts identifying unpatched systems or active exploits.
+Look for vulnerabilities flagged in vulnerability scanning tools.
+Validation:
+Confirm if the flagged system is truly unpatched by cross-referencing patch management tools or system inventory.
+Analyze logs to check for actual exploit attempts.
+Containment:
+Block access to vulnerable systems if exploitation is confirmed.
+Isolate systems that might be actively exploited.
+Documentation:
+Record the affected systems, vulnerabilities identified, and actions taken.
+Escalation:
+Refer the issue to the patch management team or escalate for mitigation and forensic investigation.
+
+10. Suspicious Privilege Escalation
+Detection:
+Identify alerts where a user or process is attempting to gain admin/root privileges without authorization.
+Look for suspicious commands or attempts to modify system permissions.
+Validation:
+Cross-check whether the privilege escalation attempt is legitimate and aligned with the user's role.
+Investigate the administrative or operating system logs for details.
+Containment:
+Disable the user account if the privilege escalation is confirmed as unauthorized.
+Disable the specific process or privileges (if appropriate).
+Documentation:
+Record the escalated privileges, attempted methods, and containment actions.
+Escalation:
+Escalate to Incident Response or Tier 2 for further investigation of potential internal or malware-led escalations.
