@@ -1,0 +1,67 @@
+Phishing Email
+
+Step 1: Detection
+What you're doing here: Identifying signs that the email is potentially malicious.
+
+Find the suspicious email:
+Review the email contents for red flags:
+Sender’s email address: Look closely at the sender’s email. Does it have slight misspellings (e.g., "admin@paypul.com" instead of "admin@paypal.com")? unfamiliar domain (e.g., “info@unknowncompany.com”)?
+Urgency in the subject line or body: Scammers tend to use emotionally charged language (e.g., "ACTION REQUIRED: Your account will be locked in 24 hours").
+Typos or grammatical errors: Such mistakes are often present in phishing emails.(maybe not with AI)
+Unusual requests: Does the email ask for sensitive information, like passwords, payment details, or confidential company data?
+Suspicious links or file attachments:
+Hover over links to see where they lead. Does the link match the intended destination?
+Are there attachments(.exe, .bin)? malware?
+Check headers:
+Look at IP addresses and routing information. For example, if the email claims to be from someone internal (e.g., "CEO@yourcompany.com") but the email originated from an unrelated IP or domain, it could be fake.
+
+Step 2: Validation
+
+Look up the sender's email/domain:
+Use threat intelligence tools (e.g., VirusTotal or AbuseIPDB) to check if the email sender’s domain or IP address is associated with known malicious activity.
+Example: Search "email domain: malicious-sendersite.com" in VirusTotal.
+**Analyze links and attachments (use a sandbox):
+Ask the recipient (if necessary): ask the person who reported the email if they were expecting anything from the sender or interacted with the email.
+If unsure, and it looks suspicious, proceed with containment steps.
+Correlate with past incidents:
+If the sender has already been flagged as malicious, you can confidently mark it as a phishing attempt.
+
+Step 3: Containment
+Preventing this email from spreading or being used to harm the company.
+
+Quarantine or delete the email:
+Use your email system or security tools to remove the email from the inbox of the recipient.
+tools like Microsoft Defender for Office 365 or Proofpoint, delete malicious emails across multiple inboxes.
+Block the sender:
+Add the email address and/or domain to your organization's spam filter to prevent future emails from the same source.
+If it’s a known attack, update email security gateway filters (e.g., Proofpoint, Mimecast) to block other potential phishing emails from that domain.
+Notify the user:
+Reach out to the user who reported or received the email and let them know you’ve taken care of it.
+Remind them not to click links or download attachments, and reassure them that they did the right thing by reporting it.
+
+Step 4: Documentation
+What you're doing here: Keeping records to make sure the incident is captured for future analysis.
+
+Log the incident into your ticketing system or SIEM:
+Include details such as:
+Email metadata: Sender email, subject line, timestamps, and attachments/links involved.
+Recipient information: The username or email of the employee(s) targeted.
+Actions taken: Describe what you did (e.g., “Blocked sender, removed email, notified user”).
+Severity level: Rate the potential impact of the email and probability of harm (e.g., Critical, Medium, Low).
+Save evidence:
+Export headers or other related information for future investigation.
+Screenshots can be helpful.
+Report details to your team:
+If required, summarize findings and circulate to your SOC team to update dashboards, playbooks, or awareness.
+
+Step 5: Escalation
+What you're doing here: If there’s something unusual about the phishing email, get more experienced team members involved.
+
+Decide if the email is complex or targeted:
+The email is part of a larger attack (e.g., multiple users received it)?
+The movement appears coordinated, such as internal staff being impersonated (Business Email Compromise).
+The links or attachments lead to advanced malware or ransomware.
+The email contains some unclear or sophisticated element (e.g., encrypted payloads, no obvious malicious indicators).
+Escalate to Tier 2 or Threat Intel team:
+Send all your documentation to your Tier 2 SOC colleagues or the designated team that handles in-depth investigations.
+Flag the incident as urgent in your ticketing system (if applicable).
